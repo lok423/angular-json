@@ -1,0 +1,19 @@
+.example-tooltip-red {
+  background: #b71c1c;
+}
+
+.mat-row:hover {
+  background-color: lightgray;
+}
+
+/* .example-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+} */
+
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
+  width:100%;
+}

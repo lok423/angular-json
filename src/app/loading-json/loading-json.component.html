@@ -1,0 +1,102 @@
+
+<!--
+<mat-form-field>
+  List length:
+  <input matInput [(ngModel)]="length">
+</mat-form-field>
+
+<mat-form-field>
+  Page size:
+  <input matInput [(ngModel)]="pageSize">
+</mat-form-field>
+<mat-form-field>
+  Page size options:
+  <input matInput
+         [ngModel]="pageSizeOptions"
+         (ngModelChange)="setPageSizeOptions($event)">
+</mat-form-field> -->
+<div class="container mat-elevation-z8">
+  <h2>Manual Article Classification</h2>
+  <div class="example-table-container">
+  <table  mat-table [dataSource]="dataSource" >
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef> No. </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <!-- Title Column -->
+    <ng-container matColumnDef="title" >
+      <th mat-header-cell *matHeaderCellDef> Title </th>
+      <td class="title_column" mat-cell *matCellDef="let element" matTooltip="{{element.subtitle}}" matTooltipClass="example-tooltip-red"
+   (click)="openDialog(element.title,element.content)"> {{element.title}} </td>
+    </ng-container>
+
+    <!-- Subtitle Column -->
+    <!-- <ng-container matColumnDef="subtitle">
+      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <td mat-cell *matCellDef="let element"> {{element.subtitle}} </td>
+    </ng-container> -->
+
+    <!-- Category Column -->
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef> Category </th>
+      <!-- <td mat-cell *matCellDef="let element"> {{element.category}} </td> -->
+      <!-- <input matInput [(ngModel)]="element.category"> -->
+
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field>
+          <mat-select [(ngModel)]="element.category">
+            <mat-option value="10px">10px</mat-option>
+            <mat-option value="12px">12px</mat-option>
+            <mat-option value="14px">14px</mat-option>
+            <mat-option value="16px">16px</mat-option>
+            <mat-option value="18px">18px</mat-option>
+            <mat-option value="20px">20px</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </ng-container>
+
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <!-- {{dataSource|json}} -->
+
+  <mat-paginator  #paginator
+                   [pageSize]="10"
+                   [pageSizeOptions]="[5, 10, 20,50,100]">
+    </mat-paginator>
+
+  <div *ngIf="pageEvent">
+    <h5>Page Change Event Properties</h5>
+    <div>List length: {{pageEvent.length}}</div>
+    <div>Page size: {{pageEvent.pageSize}}</div>
+    <div>Page index: {{pageEvent.pageIndex}}</div>
+  </div>
+
+
+
+</div>
+</div>
+
+<!-- <mat-paginator #paginator
+              [length]="length"
+              [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions"
+              (page)="pageEvent = $event">
+</mat-paginator> -->
+
+
+
+
+<!-- Copyright 2018 Google Inc. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->
