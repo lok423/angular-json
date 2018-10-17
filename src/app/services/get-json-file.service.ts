@@ -17,7 +17,9 @@ constructor(private http: HttpClient) {
     public getJSON(): Observable<any> {
         console.log("hello");
 
-        return this.http.get("./assets/demofile.json")
+        // return this.http.get("./assets/demofile.json")
+        return this.http.get("./assets/articles.json")
+
     }
 
 }

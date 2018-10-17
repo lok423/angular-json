@@ -17,3 +17,16 @@
   max-height: 500px;
   width:100%;
 }
+
+.mat-chip {
+  font-size: 5px;
+}
+
+.mat-basic-chip {
+  background: #7986cb;
+  color: aliceblue;
+  margin: 0 0 0 8px;
+  padding: 2px 3px;
+  border-radius: 5px;
+  font-size: 5px;
+}

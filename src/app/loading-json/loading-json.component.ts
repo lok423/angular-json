@@ -18,7 +18,14 @@ export class LoadingJsonComponent implements OnInit {
   // dataSource = new MatTableDataSource<Article>(this.data);
   dataSource :MatTableDataSource<Article>;
 
-  displayedColumns: string[] = ['position','title','category'];
+  displayedColumns: string[] = ['position','title','tags','category'];
+  news:Article[];
+  features:Article[];
+  opinion:Article[];
+  teaching:Article[];
+  sectors:Article[];
+  future:Article[];
+
 
   // @ViewChild('paginator')
   // private paginator: MatPaginator;
@@ -32,11 +39,12 @@ export class LoadingJsonComponent implements OnInit {
 
   ngOnInit() {
     this.getJsonService.getJSON().subscribe(data => {
-            let element: Article[]=data;
-            //console.log(data.length);
+            let element: Article[]=data[0].concat(data[1],data[2],data[3],data[4],data[5]);
+            console.log(element);
+            
             for(var i=0;i<element.length;i++){
             element[i].id = i+1
-            element[i].category = '12';
+            element[i].category = '';
             }
             this.data = element;
             this.dataSource = new MatTableDataSource<Article>(this.data);
@@ -79,9 +87,10 @@ export class LoadingJsonComponent implements OnInit {
 
 export interface Article {
   id: number;
-  keywords:string[];
+  // keywords:string[];
   title: string;
   subtitle:string;
   content:string[];
   category: string;
+  tags: string[];
 }
