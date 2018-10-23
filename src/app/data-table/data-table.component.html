@@ -1,0 +1,132 @@
+<div id="dataEditor">
+  <!-- <h3>
+    Inline Editing
+    <small>
+      <a href="https://github.com/swimlane/ngx-datatable/blob/master/demo/basic/inline.component.ts" target="_blank">
+        Source
+      </a>
+    </small>
+  </h3> -->
+  <div class="row">
+    <div class="col text-center">
+      <mat-form-field>
+        <mat-select placeholder="Menu" [(value)]="selected_menu" (selectionChange)="changeData(selected_menu)">
+          <mat-option value="0">News</mat-option>
+          <mat-option value="1">Features</mat-option>
+          <mat-option value="2">Opinion</mat-option>
+          <mat-option value="3">Teaching & Learning</mat-option>
+          <mat-option value="4">Sectors</mat-option>
+          <mat-option value="5">Future</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p>You selected: {{menu[selected_menu]}}</p>
+    </div>
+    <div class="col text-center"><input
+      type='text'
+      style='padding:8px;margin:15px auto;width:400px;'
+      placeholder='Type to filter the Title column...'
+      (keyup)='updateFilter($event)'
+    /></div>
+    <div class="col text-center">
+      <label for="pagesize">Page size:</label>
+      <select #pagesize [(ngModel)]="pageSize" (change)="updateLimit(pageSize)">
+        <option *ngFor="let size of pageSizeOptions" [value]="size" >{{size}}</option>
+      </select>
+    </div>
+    
+  </div>
+  <!-- <div class="row">
+    <div class="col text-center"></div>
+    </div> -->
+  <ngx-datatable #table class="material ngx-datatable fixed-header" [headerHeight]="50" [limit]="5" [columnMode]="'force'"
+    [rowHeight]="'auto'" [rows]="selected_data" [selectionType]="'single'" (select)='onSelect($event)' [selected]="selected"
+    [footerHeight]="50">
+
+
+
+    <ngx-datatable-column name="Date" [width]="50">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        {{value|date}}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Title" [width]="200">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+        <a title="Double click to edit" (keydown.tab)="editing[rowIndex + '-title'] = true" *ngIf="!editing[rowIndex + '-title']" [tabindex]="0">
+          {{value}}
+        </a>
+        <input class="cell-input" autofocus (blur)="updateValue($event, 'title', rowIndex)" *ngIf="editing[rowIndex+ '-title']"
+          type="text" [value]="value" />
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Description">
+      <ng-template ngx-datatable-cell-template let-value="value" let-row="row" let-rowIndex="rowIndex">
+          <a title="Double click to edit" (keydown.tab)="editing[rowIndex + '-description'] = true" *ngIf="!editing[rowIndex + '-description']" [tabindex]="0">
+              {{value}}
+            </a>
+            <textarea  rows="7" class="cell-input" autofocus (blur)="updateValue($event, 'description', rowIndex)" *ngIf="editing[rowIndex+ '-description']"
+              type="text" [value]="value" ></textarea>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Content" >
+      <ng-template ngx-datatable-cell-template let-value="value" let-row="row" let-rowIndex="rowIndex">
+        <span class="content" title="Double click to edit" (keydown.enter)=" openDialog(selected_data[rowIndex].title,selected_data[rowIndex].content, $event, 'content', rowIndex)" (click)=" openDialog(selected_data[rowIndex].title,selected_data[rowIndex].content, $event, 'content', rowIndex)"
+           >
+          <button>enter or click to see article</button>
+        </span>
+
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Tags">
+      <ng-template ngx-datatable-cell-template let-value="value" let-row="row" let-rowIndex="rowIndex">
+          <a title="Double click to edit" (keydown.tab)="editing[rowIndex + '-tags'] = true" *ngIf="!editing[rowIndex + '-tags']" [tabindex]="0">
+              {{value}}
+            </a>
+            <textarea  rows="5" class="cell-input" autofocus (blur)="updateArrayValue($event, 'tags', rowIndex)" *ngIf="editing[rowIndex+ '-tags']"
+              type="text" [value]="value" ></textarea>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Category" [width]="50">
+      <ng-template ngx-datatable-cell-template let-value="value" let-rowIndex="rowIndex" let-row="row">
+        <select (blur)="editing[rowIndex + '-category'] = false" (change)="updateValue($event, 'category', rowIndex)"
+          [value]="value" >
+          <option *ngFor="let mainCategory of mainCategory_list" [value]="mainCategory">{{mainCategory}}</option>
+
+        </select>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="SubCategory" [width]="50">
+      <ng-template ngx-datatable-cell-template let-value="value" let-rowIndex="rowIndex" let-row="row">
+        <select (blur)="editing[rowIndex + '-subcategory'] = false" (change)="updateValue($event, 'subcategory', rowIndex)"
+          [value]="value">
+          <option *ngFor="let subCategory of subCategory_list[selected_data[rowIndex]['category']]" [value]="subCategory">{{subCategory}}</option>
+
+        </select>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Type" [width]="50">
+      <ng-template ngx-datatable-cell-template let-value="value" let-rowIndex="rowIndex" let-row="row">
+        <select (blur)="editing[rowIndex + '-type'] = false" (change)="updateValue($event, 'type', rowIndex)" [value]="value">
+          
+        </select>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Weighty" [width]="50">
+      <ng-template ngx-datatable-cell-template let-value="value" let-rowIndex="rowIndex" let-row="row">
+        <select (blur)="editing[rowIndex + '-weighty'] = false" (change)="updateValue($event, 'weighty', rowIndex)"
+          [value]="value">
+          <option *ngFor="let weight of weighty_list" [value]="weight">{{weight}}</option>
+          
+        </select>
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+  <br>
+  <div class="row">
+    <div class="col text-center">
+        <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- {{selected_data|json}} -->

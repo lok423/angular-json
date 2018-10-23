@@ -3,10 +3,18 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
-
 import { AppRoutingModule } from './app-routing.module';
+import {TableModule} from 'ngx-easy-table';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
+
+
 import { AppComponent } from './app.component';
 import { LoadingJsonComponent } from './loading-json/loading-json.component';
+import { ArticleDialogComponent } from './article-dialog/article-dialog.component';
+import { EasyTableComponent } from './easy-table/easy-table.component';
+import { DataTableComponent } from './data-table/data-table.component';
+
 
 
 //imports angular materials
@@ -40,13 +48,15 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
-import { ArticleDialogComponent } from './article-dialog/article-dialog.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoadingJsonComponent,
-    ArticleDialogComponent
+    ArticleDialogComponent,
+    EasyTableComponent,
+    DataTableComponent
   ],
   imports: [
     BrowserModule,
@@ -85,11 +95,14 @@ import { ArticleDialogComponent } from './article-dialog/article-dialog.componen
     MatSortModule,
     MatPaginatorModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TableModule,
+    NgxDatatableModule
 
   ],
   providers: [
     HttpClientModule,
+    HttpClient
 ],
   bootstrap: [AppComponent],
   entryComponents:[ArticleDialogComponent]

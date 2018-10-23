@@ -1,0 +1,24 @@
+<br>
+<div class="row">
+  <div class="col text-center">
+        <mat-form-field>
+            <mat-select placeholder="Menu" [(value)]="selected" (selectionChange)="changeData(selected)">
+                <mat-option value="0">News</mat-option>
+                <mat-option value="1">Features</mat-option>
+                <mat-option value="2">Opinion</mat-option>
+                <mat-option value="3">Teaching & Learning</mat-option>
+                <mat-option value="4">Sectors</mat-option>
+                <mat-option value="5">Future</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <p>You selected: {{selected}}</p>
+
+  </div>
+</div>
+
+<div class="column col-12">
+  <!-- <ngx-table [data]="selected_data" [configuration]="configuration" [columns]="columns" (event)="eventEmitted($event)"> -->
+  <ngx-table [data]="selected_data" [configuration]="configuration" [columns]="columns" >
+
+  </ngx-table>
+</div>

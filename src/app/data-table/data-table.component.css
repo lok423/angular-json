@@ -1,0 +1,90 @@
+.cell-input {
+  font-size: 14px;
+  display: block;
+  background: transparent;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #5264AE;
+}
+
+input:focus {
+  outline: none;
+}
+
+.content {
+  max-height: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* .ngx-datatable.material.single-selection .datatable-body-row.active {
+  background-color: aliceblue !important;
+} */
+
+
+/* 
+body {
+    font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
+    text-align: left;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 2rem;
+    letter-spacing: 0.01rem;
+    color: #212121;
+    background-color: #fafafa;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    margin: 0;
+    position: relative;
+  }
+  
+  
+  
+  .selected-column {
+    background: #FFF;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+  }
+  
+  .group {
+    position: relative;
+    margin-bottom: 45px;
+  }
+  
+  
+  input[type=text] {
+    font-size: 14px;
+    display: block;
+    background: transparent;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #5264AE;
+  }
+  
+  
+  textarea {
+    font-size: 14px;
+    font-family: sans-serif;
+    display: block;
+    background: transparent;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #5264AE;
+    resize: vertical;
+  }
+  
+  
+  
+  a {
+    color: grey;
+    text-decoration: none;
+  }
+  
+  .expander-btn {
+    margin-top:8px;
+    display:block;
+  }
+   */
