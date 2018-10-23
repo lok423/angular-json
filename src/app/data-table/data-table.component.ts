@@ -17,12 +17,12 @@ export class DataTableComponent implements OnInit {
   selected_menu = '0';
   editing = {};
   menu = {
-    0: "News",
-    1: "Features",
-    2: "Opinion",
-    3: "Teaching & Learning",
-    4: "Sectors",
-    5: "Future",
+    0: {name:"News",value:"news"},
+    1: {name:"Features",value:"features"},
+    2: {name:"Opinion",value:"opinion"},
+    3: {name:"Teaching & Learning",value:"teaching"},
+    4: {name:"Sectors",value:"sectors"},
+    5: {name:"Future",value:"future"},
   }
   selected =[];
   temp = [];
@@ -30,8 +30,9 @@ export class DataTableComponent implements OnInit {
   pageSize = 5;
   weighty_list = [0,1,2,3,4,5,6,7,8,9];
   mainCategory_list = ["Study resources","Education and learning theories","Education inspiration and motivation","School news","Curriculum news","Other"];
-  subCategory_list = {"Study resources":["Maths","Natural Science","Social Sciences","Languages"]};
+  subCategory_list = {"Study resources":["","Maths","Natural Science","Social Sciences","Languages"]};
   @ViewChild(DatatableComponent) table: DatatableComponent;
+  loading = true;
 
   constructor(private getJsonService: GetJsonFileService,
     public dialog: MatDialog,
@@ -39,18 +40,25 @@ export class DataTableComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getJsonService.getJSON().subscribe(data => {
-      data.forEach(category => {
-        category.forEach(article => {
-          var date = Date.parse(article.date);
-          article.date = date;
-        });
-      });
-      this.raw_data = data;
-      this.selected_data = data[0];
-      this.temp = [...this.selected_data];
+    this.dataService.getData(this.menu[this.selected_menu].value).subscribe(data=>{
       console.log(data);
+      this.selected_data = data;
+      this.temp = [...this.selected_data];
+      this.loading =false;
+
     });
+    // this.getJsonService.getJSON().subscribe(data => {
+    //   data.forEach(category => {
+    //     category.forEach(article => {
+    //       var date = Date.parse(article.date);
+    //       article.date = date;
+    //     });
+    //   });
+    //   this.raw_data = data;
+    //   this.selected_data = data[0];
+    //   this.temp = [...this.selected_data];
+    //   // console.log(data);
+    // });
   }
 
   updateValue(event, cell, rowIndex) {
@@ -77,10 +85,16 @@ export class DataTableComponent implements OnInit {
     // this.selected_data = this.raw_data[selected_menu];
     // this.temp = [...this.selected_data];
     // console.log(this.selected_data);
+    this.selected_data = [];
     console.log(this.menu[selected_menu]);
-    this.dataService.getData(this.menu[selected_menu]).subscribe(data=>{
+    this.loading = true;
+    this.dataService.getData(this.menu[selected_menu].value).subscribe(data=>{
       console.log(data);
+      this.selected_data = data;
+      this.temp = [...this.selected_data];
+      this.loading=false;
     });
+    
 
   }
 
@@ -94,9 +108,7 @@ export class DataTableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.editing[rowIndex + '-' + cell] = false;
-
       console.log('The dialog was closed');
-      // this.animal = result;
     });
   }
   onSelect({ selected }) {
@@ -125,6 +137,19 @@ export class DataTableComponent implements OnInit {
 
   onSubmit(){
     var data = Array.from(this.table.bodyComponent.rowIndexes.keys());
+    console.log(data);
+    for(var i=0;i<data.length;i++){
+      var id = data[i]['_id'];
+      var date:Date = data[i]['date'];
+      data[i]['originalDate'] = date;
+      data[i]['refId'] = id;
+      data[i]['categorize']=true;
+      delete data[i]['date'];
+      delete data[i]['_id'];
+      delete data[i]['__v'];
+      delete data[i]['precategory'];
+    }
+
     console.log(data);
     this.dataService.sendEditedData(data).subscribe(
       (res) => console.log(res),

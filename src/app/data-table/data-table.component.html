@@ -19,7 +19,7 @@
           <mat-option value="5">Future</mat-option>
         </mat-select>
       </mat-form-field>
-      <p>You selected: {{menu[selected_menu]}}</p>
+      <p>You selected: {{menu[selected_menu].name}}</p>
     </div>
     <div class="col text-center"><input
       type='text'
@@ -40,7 +40,7 @@
     </div> -->
   <ngx-datatable #table class="material ngx-datatable fixed-header" [headerHeight]="50" [limit]="5" [columnMode]="'force'"
     [rowHeight]="'auto'" [rows]="selected_data" [selectionType]="'single'" (select)='onSelect($event)' [selected]="selected"
-    [footerHeight]="50">
+    [footerHeight]="50" [loadingIndicator]="loading">
 
 
 
