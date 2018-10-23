@@ -14,7 +14,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class UpdateDataService {
-    serverUrl = "http://localhost:4000/preparedata"
+    serverUrl = "http://localhost:4000/api/preparedata/"
     
 
 constructor(private http: HttpClient,
@@ -35,5 +35,8 @@ constructor(private http: HttpClient,
     // handleHttpError(error: HttpErrorResponse):Observable<any>{
         
     // }
+    getData(category):Observable<any> {
+      return this.http.get<any>(this.serverUrl + category);
+    }
 
 }

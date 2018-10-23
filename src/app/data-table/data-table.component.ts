@@ -35,7 +35,7 @@ export class DataTableComponent implements OnInit {
 
   constructor(private getJsonService: GetJsonFileService,
     public dialog: MatDialog,
-    private updateData : UpdateDataService
+    private dataService : UpdateDataService
   ) { }
 
   ngOnInit() {
@@ -74,9 +74,14 @@ export class DataTableComponent implements OnInit {
   }
 
   changeData(selected_menu) {
-    this.selected_data = this.raw_data[selected_menu];
-    this.temp = [...this.selected_data];
-    console.log(this.selected_data);
+    // this.selected_data = this.raw_data[selected_menu];
+    // this.temp = [...this.selected_data];
+    // console.log(this.selected_data);
+    console.log(this.menu[selected_menu]);
+    this.dataService.getData(this.menu[selected_menu]).subscribe(data=>{
+      console.log(data);
+    });
+
   }
 
   openDialog(article_title, article_content, event, cell, rowIndex): void {
@@ -121,7 +126,7 @@ export class DataTableComponent implements OnInit {
   onSubmit(){
     var data = Array.from(this.table.bodyComponent.rowIndexes.keys());
     console.log(data);
-    this.updateData.sendEditedData(data).subscribe(
+    this.dataService.sendEditedData(data).subscribe(
       (res) => console.log(res),
       (err:any)=> console.log(err),
       ()=>console.log("finish upload")
