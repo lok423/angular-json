@@ -122,7 +122,7 @@
     </ngx-datatable-column>
   </ngx-datatable>
   <br>
-  <div class="row">
+  <div class="row" *ngIf="loading==false">
     <div class="col text-center">
         <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
     </div>

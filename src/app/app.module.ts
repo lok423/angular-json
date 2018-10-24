@@ -14,6 +14,7 @@ import { LoadingJsonComponent } from './loading-json/loading-json.component';
 import { ArticleDialogComponent } from './article-dialog/article-dialog.component';
 import { EasyTableComponent } from './easy-table/easy-table.component';
 import { DataTableComponent } from './data-table/data-table.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 
 
@@ -56,7 +57,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     LoadingJsonComponent,
     ArticleDialogComponent,
     EasyTableComponent,
-    DataTableComponent
+    DataTableComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -105,6 +107,6 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     HttpClient
 ],
   bootstrap: [AppComponent],
-  entryComponents:[ArticleDialogComponent]
+  entryComponents:[ArticleDialogComponent,ConfirmationDialogComponent]
 })
 export class AppModule { }

@@ -1,10 +1,11 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { GetJsonFileService } from '../services/get-json-file.service'
 import { CdkFooterRowDefBase } from '@angular/cdk/table';
 import { ArticleDialogComponent } from '../article-dialog/article-dialog.component';
-import {PageEvent, MatDialog, MatTableDataSource, MatPaginator} from '@angular/material';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { PageEvent, MatDialog, MatTableDataSource, MatPaginator } from '@angular/material';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
-import {UpdateDataService} from '../services/update-data.service';
+import { UpdateDataService } from '../services/update-data.service';
 
 @Component({
   selector: 'app-data-table',
@@ -17,34 +18,34 @@ export class DataTableComponent implements OnInit {
   selected_menu = '0';
   editing = {};
   menu = {
-    0: {name:"News",value:"news"},
-    1: {name:"Features",value:"features"},
-    2: {name:"Opinion",value:"opinion"},
-    3: {name:"Teaching & Learning",value:"teaching"},
-    4: {name:"Sectors",value:"sectors"},
-    5: {name:"Future",value:"future"},
+    0: { name: "News", value: "news" },
+    1: { name: "Features", value: "features" },
+    2: { name: "Opinion", value: "opinion" },
+    3: { name: "Teaching & Learning", value: "teaching" },
+    4: { name: "Sectors", value: "sectors" },
+    5: { name: "Future", value: "future" },
   }
-  selected =[];
+  selected = [];
   temp = [];
   pageSizeOptions: number[] = [5, 10, 25, 100];
   pageSize = 5;
-  weighty_list = [0,1,2,3,4,5,6,7,8,9];
-  mainCategory_list = ["Study resources","Education and learning theories","Education inspiration and motivation","School news","Curriculum news","Other"];
-  subCategory_list = {"Study resources":["","Maths","Natural Science","Social Sciences","Languages"]};
+  weighty_list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  mainCategory_list = ["Study resources", "Education and learning theories", "Education inspiration and motivation", "School news", "Curriculum news", "Other"];
+  subCategory_list = { "Study resources": ["", "Maths", "Natural Science", "Social Sciences", "Languages"] };
   @ViewChild(DatatableComponent) table: DatatableComponent;
   loading = true;
 
   constructor(private getJsonService: GetJsonFileService,
     public dialog: MatDialog,
-    private dataService : UpdateDataService
+    private dataService: UpdateDataService
   ) { }
 
   ngOnInit() {
-    this.dataService.getData(this.menu[this.selected_menu].value).subscribe(data=>{
+    this.dataService.getData(this.menu[this.selected_menu].value).subscribe(data => {
       console.log(data);
       this.selected_data = data;
       this.temp = [...this.selected_data];
-      this.loading =false;
+      this.loading = false;
 
     });
     // this.getJsonService.getJSON().subscribe(data => {
@@ -88,20 +89,20 @@ export class DataTableComponent implements OnInit {
     this.selected_data = [];
     console.log(this.menu[selected_menu]);
     this.loading = true;
-    this.dataService.getData(this.menu[selected_menu].value).subscribe(data=>{
+    this.dataService.getData(this.menu[selected_menu].value).subscribe(data => {
       console.log(data);
       this.selected_data = data;
       this.temp = [...this.selected_data];
-      this.loading=false;
+      this.loading = false;
     });
-    
+
 
   }
 
   openDialog(article_title, article_content, event, cell, rowIndex): void {
     const dialogRef = this.dialog.open(ArticleDialogComponent, {
       data: {
-        content:article_content,
+        content: article_content,
         title: article_title
       }
     });
@@ -119,7 +120,7 @@ export class DataTableComponent implements OnInit {
     const val = event.target.value.toLowerCase();
 
     // filter our data
-    const temp = this.temp.filter(function(d) {
+    const temp = this.temp.filter(function (d) {
       return d.title.toLowerCase().indexOf(val) !== -1 || !val;
     });
 
@@ -135,27 +136,45 @@ export class DataTableComponent implements OnInit {
     this.table.recalculatePages();
   }
 
-  onSubmit(){
+  onSubmit() {
     var data = Array.from(this.table.bodyComponent.rowIndexes.keys());
     console.log(data);
-    for(var i=0;i<data.length;i++){
+    for (var i = 0; i < data.length; i++) {
       var id = data[i]['_id'];
-      var date:Date = data[i]['date'];
+      var date: Date = data[i]['date'];
       data[i]['originalDate'] = date;
       data[i]['refId'] = id;
-      data[i]['categorize']=true;
+      data[i]['categorize'] = true;
       delete data[i]['date'];
       delete data[i]['_id'];
       delete data[i]['__v'];
       delete data[i]['precategory'];
     }
 
+    this.openConfirmationDialog(data);
+
     console.log(data);
-    this.dataService.sendEditedData(data).subscribe(
-      (res) => console.log(res),
-      (err:any)=> console.log(err),
-      ()=>console.log("finish upload")
-      );
+
+  }
+
+
+  openConfirmationDialog(data) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+      if (result == true) {
+        this.dataService.sendEditedData(data).subscribe(
+          (res) => console.log(res),
+          (err: any) => console.log(err),
+          () => {
+            console.log("finish upload");
+            
+            console.log(Array.from(this.table.bodyComponent.rowIndexes.values( )));
+          }
+        );
+      }
+    });
   }
 
   // onKeydown(event) {
@@ -164,7 +183,7 @@ export class DataTableComponent implements OnInit {
   //   }
   // }
 
-  
+
 
 
 }
